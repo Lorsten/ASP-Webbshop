@@ -1,0 +1,38 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
+    {
+        Layout = (string)parentLayout;
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
+}
+@using Microsoft.AspNetCore.Identity
+@using ProjectWeb.Areas.Identity.Data
+
+@inject SignInManager<ProjectWebUser> SignInManager
+@inject UserManager<ProjectWebUser> UserManager
+
+
+<section id="pagenavigation">
+    <h2>Min sida</h2>
+    <ul>
+
+        <partial name="_ManageNav" />
+        <li>
+            <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link text-dark">Logga ut</button>
+            </form>
+        </li>
+    </ul>
+</section>
+<section id="mypage">
+    <h2>Välkommen @UserManager.GetUserName(User)</h2>
+    @RenderBody()
+</section>
+
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

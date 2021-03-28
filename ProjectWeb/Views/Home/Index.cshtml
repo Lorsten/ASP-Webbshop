@@ -1,0 +1,47 @@
+﻿@{
+    List<string> Images = (List<string>)ViewData["ImagePath"];
+}
+
+
+<article id="start">
+    <h2>Välkommen till burgeronline</h2>
+    <h3>Beställ med take-away eller leverans hem till dig</h3>
+    <a asp-action="Index" asp-controller="Products">Hitta din mat</a>
+</article>
+<article class="large">
+    <h2>Senaste erbjudande</h2>
+    <a asp-action="Index" asp-controller="Products">
+        <img src="images/photo-1598182198871-d3f4ab4fd181.jpg" alt="Bild på den senaste hamburgaren">
+        <h3 class="imgtext">Se vårt senaste erbjuande</h3>
+    </a>
+</article>
+<article class="side">
+    <h2>Nyhet</h2>
+    <a asp-action="Index" asp-controller="Products">
+        <img src="images/photo-1498579485796-98be3abc076e.jpg" alt="Bild på erbjudande">
+        <h3 class="imgtext">Nyhet</h3>
+    </a>
+</article>
+<article class="side">
+    <h2>Just nu</h2>
+    <a asp-action="Index" asp-controller="Products">
+        <img src="images/photo-1498579485796-98be3abc076e.jpg" alt="bild på aktuell hamburgare">
+        <h3 class="imgtext">Just nu</h3>
+    </a>
+
+</article>
+<article class="medium">
+    <h2>Gör din beställning</h2>
+    <a asp-action="Index" asp-controller="Products">
+        <img src="images/photo-1609427955204-d0a737cb2c1a.jpg" alt="Bild på en beställning">
+        <h3 class="imgtext">Gör din beställning</h3>
+    </a>
+</article>
+<article class="medium">
+    <h2>Halva priset</h2>
+
+    <a asp-action="Index" asp-controller="Products">
+        <img src="images/photo-1572802419224-296b0aeee0d9.jpg" alt="Bild på burger one hamburgare">
+        <h3 class="imgtext">Halva priset</h3>
+    </a>
+</article>

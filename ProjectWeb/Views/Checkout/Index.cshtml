@@ -1,0 +1,91 @@
+﻿@model ProjectWeb.Models.UserData;
+
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@inject SignInManager<ProjectWebUser> SignInManager
+@inject UserManager<ProjectWebUser> UserManager
+<section class="twothird-width">
+    <h2 class="headline">Dina varor</h2>
+    <table>
+        <component type="typeof(ShoppingCart)" render-mode="ServerPrerendered" param-MyCart="ViewBag.Cart" param-DisplayCart="false" />
+    </table>
+</section>
+<section class="onethird-width">
+    <h2>Betalningsdetaljer</h2>
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+<form asp-action="CreateOrderUser" method="post">
+    <label for="cardtype">Betalningsmetod</label>
+    <select id="cardtype">
+        <option value="">Kort</option>
+        <option value="">Visa</option>
+        <option value="">Mastercard</option>
+    </select>
+    <label for="card">Kortnummer</label>
+    <input type="number" id="card">
+    <div class="datecontainer">
+        <label for="card">Datum</label>
+        <input type="date" id="Expire">
+    </div>
+    <div class="datecontainer">
+        <label>Number</label>
+        <input type="number" id="number-last">
+    </div>
+    <input type="hidden" value="@ViewBag.UserID" id="UserIDCookie" />
+    <input type="submit" class="button" value="Slutför order">
+</form>
+    }
+    else
+    {
+<form asp-action="Index" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <h3>Faktureringsuppgifter</h3>
+
+    <label asp-for="Firstname"></label>
+    <input asp-for="Firstname" />
+    <span asp-validation-for="Firstname" class="text-danger"></span>
+
+    <label asp-for="Lastname"></label>
+    <input asp-for="Lastname" />
+    <span asp-validation-for="Lastname" class="text-danger"></span>
+
+    <label asp-for="Adress"></label>
+    <input asp-for="Adress" />
+    <span asp-validation-for="Adress" class="text-danger"></span>
+
+    <label asp-for="City"></label>
+    <input asp-for="City" />
+    <span asp-validation-for="City" class="text-danger"></span>
+
+    <label asp-for="Email"></label>
+    <input asp-for="Email" />
+    <span asp-validation-for="Email" class="text-danger"></span>
+
+    <label for="cardtype">Betalningsmetod</label>
+    <select id="cardtype">
+        <option value="">Kort</option>
+        <option value="">Visa</option>
+        <option value="">Mastercard</option>
+    </select>
+    <label for="card">Kortnummer</label>
+    <input type="number" id="card">
+    <div class="datecontainer">
+        <label for="card">Datum</label>
+        <input type="date" id="Expire">
+    </div>
+    <div class="datecontainer">
+        <label>Number</label>
+        <input type="number" id="number-last">
+    </div>
+    <input type="hidden" value="@ViewBag.UserID" id="UserIDCookie" />
+    <input type="submit" class="button" value="Slutför order">
+</form>
+    }
+
+
+</section>

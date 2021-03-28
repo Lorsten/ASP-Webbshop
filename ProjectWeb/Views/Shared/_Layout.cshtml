@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+@{ViewData["Title"] = "BurgerOnline";}
+
+@using Microsoft.AspNetCore.Identity
+@using ProjectWeb.Areas.Identity.Data
+
+@inject SignInManager<ProjectWebUser> SignInManager
+@inject UserManager<ProjectWebUser> UserManager
+
+<html lang="sv">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <base href="/" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+</head>
+<body>
+    @{var controller = ViewContext.RouteData.Values["Controller"] != null ? ViewContext.RouteData.Values["Controller"].ToString() : ""; }
+    <div>
+        <header>
+            <div class="WidthContainer">
+                <h1 class="MainHeadline"><a asp-action="Index" asp-controller="Home">@ViewData["Title"]</a></h1>
+                <button class="hamburger hamburger--stand" id="Hambugermenu" type="button" aria-label="Öppna mobil meny">
+                    <span class="mobileHeadline">Meny</span>
+                    <span class="hamburger-box">
+                        <span class="hamburger-inner"></span>
+                    </span>
+                </button>
+                <nav class="navigation">
+                    <h2 class="Mobileheadline"><a asp-action="Index" asp-controller="Home">Online burger</a></h2>
+                    <ul>
+                        <li><a asp-controller="Home" asp-action="Index">Hem</a></li>
+                        @if (controller != "Checkout")
+                        {
+                            <li><a asp-action="Index" asp-controller="Products">Vår meny</a></li>
+                        }
+
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li> <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Min sida</a></li>
+                            <li>
+                                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                    <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logga ut</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            if (controller != "Checkout")
+                            {
+                                <li><a asp-area="Identity" asp-page="/Account/Register">Skapa konto</a></li>
+                            }
+                            <li><a asp-area="Identity" asp-page="/Account/Login">Logga in</a></li>
+                        }
+                    </ul>
+
+                </nav>
+                @if (controller != "Checkout")
+                {
+
+                    <component type="typeof(CartButton)" render-mode="ServerPrerendered" />
+    
+                }
+            </div>
+            @if (controller != "Checkout")
+            {
+                <article class="searcharticle">
+                    <h2>Sökfält</h2>
+                    @await Component.InvokeAsync("Search")
+                </article>
+            }
+            else
+            {
+                <div id="headerbackground"></div>
+            }
+
+        </header>
+        <div id="wrapper">
+            @RenderBody()
+        </div>
+        <footer>
+            <article id="cookies">
+                <h2>This website uses cookies</h2>
+                <p>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+                    and scrambled it to make a type specimen book. It has survived not only five centuries.
+                </p>
+                <button>Nej</button>
+                <button>Ja</button>
+            </article>
+            <nav>
+                <ul>
+                    <li>Följs oss på sociala medier</li>
+                    <li><a href="#" class="fa fa-instagram"></a></li>
+                    <li><a href="#" class="fa fa-twitter"></a></li>
+                    <li><a href="#" class="fa fa-facebook"></a></li>
+                </ul>
+                <ul>
+
+                    <li>Kontakt</li>
+                    <li><a asp-action="Index" asp-controller="Contact">Kontakta oss</a></li>
+                </ul>
+                <ul>
+                    <li>Om företaget</li>
+                    <li><a asp-controller="Home" asp-action="about">om oss</a></li>
+
+                </ul>
+                <ul>
+                    <li>Kundservice</li>
+                    <li><a href="#">Frågor</a></li>
+                </ul>
+            </nav>
+            <h2>&copy; @ViewData["Title"]</h2>
+        </footer>
+    </div>
+    <script src="~/js/Main.js" asp-append-version="true"></script>
+    <script src="_framework/blazor.server.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+

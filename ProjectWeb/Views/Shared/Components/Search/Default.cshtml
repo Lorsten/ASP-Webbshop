@@ -1,0 +1,5 @@
+﻿@model IEnumerable<ProjectWeb.Models.Product>
+
+<form class="search" method="post" autocomplete="off" asp-action="Index" asp-controller="Products">
+    <component type="typeof(Search)" render-mode="ServerPrerendered" param-Items="Model" />
+</form>

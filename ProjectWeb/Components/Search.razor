@@ -1,0 +1,83 @@
+﻿@page "/"
+@inject IJSRuntime JS;
+            <label for="searchBar" class="Hide-Element">Sökfält</label>
+            <div>
+                <input @oninput="testing"  @bind="Pressed" type="text" id="searchBar" name="SearchName" placeholder="sök...." class=@FormClass>
+                <div id="SearchWord" class=@SearchClassName>
+                    @if (Searching != null && AllowSearching)
+                    {
+                        if (Searching.Count() > 0)
+                        {
+                            <ul>
+                                @foreach (var items in Searching)
+                                {
+                                    <li tabindex="0" @onclick="() => Test(items.ProductName)">@items.ProductName</li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <ul>
+                                <li>Inget hittades</li>
+                            </ul>
+                        }
+
+                    }
+                </div>
+                <button type="submit" id="SearchButton" name="search"><img src="images/search.svg" alt="Sök"></button>
+            </div>
+    @code {
+
+        private string Pressed { get; set; }
+
+        private void Test(string message)
+        {
+
+            Pressed = message;
+            SearchClassName = "Inactive";
+            FormClass = "formclass round";
+            AllowSearching = false;
+        }
+
+        private string SearchClassName { get; set; } = "Inactive";
+
+        private bool AllowSearching { get; set; } = false;
+
+        private string FormClass { get; set; } = "formclass round";
+
+        public void testing(ChangeEventArgs e)
+        {
+            if (e.Value.ToString().Count() > 2)
+            {
+                SearchClassName = "active";
+                MessageTest = e.Value.ToString().ToLower();
+                ItemSearch(MessageTest);
+                AllowSearching = true;
+                FormClass = "formclass active";
+            }
+            else
+            {
+                SearchClassName = "Inactive";
+                FormClass = "formclass round";
+                AllowSearching = false;
+            }
+        }
+        private  void ItemSearch(string Search)
+        {
+            if(Items != null)
+            {
+                var query = from m in Items
+                            select m;
+                query = query.Where(x => x.ProductName.ToLower().Contains(MessageTest));
+                Searching = query;
+            }
+        }
+        [Parameter]
+        public IEnumerable<Product> Items{ get; set; }
+
+        public IEnumerable<Product> Searching { get; set; }
+
+
+        public string MessageTest { get; set; }
+
+    }

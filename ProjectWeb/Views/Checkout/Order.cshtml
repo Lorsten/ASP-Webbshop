@@ -1,0 +1,96 @@
+﻿@model ProjectWeb.Models.Order; 
+
+
+@{ 
+    UserData Info = ViewBag.Userinfo;
+
+    int Price;
+}
+<section class="confirm">
+    @if (Model == null)
+    {
+        <h2>Din order behandlas</h2>
+    }
+    else
+    {
+
+        <h2>Din order är på väg</h2>
+        <article id="summary">
+            <h3>Ordersammanfattning</h3>
+            <ul>
+                <li>@Html.DisplayNameFor(model => model.OrderNumber)</li>
+                <li>@Html.DisplayFor(model => model.OrderNumber)</li>
+                <li>@Html.DisplayNameFor(model => model.OrderDate)</li>
+                <li>@Html.DisplayFor(model => model.OrderDate)</li>
+                <li>Kostnad:</li>
+                <li>@Html.DisplayFor(model => model.Price)</li>
+            </ul>
+            <ul class="adress">
+                <li>Leveransadress</li>
+                <li>@Info.Adress</li>
+                <li>Stad</li>
+                <li>@Info.City</li>
+            </ul>
+        </article>
+        <article>
+            <h3>Dina produkter</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Produkt
+                        </th>
+                        <th>
+                            Pris
+                        </th>
+                        <th>
+                            Antal
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if(ViewData["Products"] != null)
+                    {
+
+                    @foreach (var items in ViewData["Products"] as List<CartUser>)
+                    {
+                    <tr>
+     
+                        <td><img class="checkoutImg" src="@items.ProductItem.ImagePath" alt="@items.ProductItem.ImageDesc">@items.ProductItem.ProductName</td>
+                        <td>@{Price = items.ProductItem.Price * items.Quantity; }@Price kr</td>
+                        <td><span class="QuantityField">@items.Quantity</span></td>
+                    </tr>
+                    }
+                    }
+                </tbody>
+            </table>
+        </article>
+        <article>
+            <h3>Kostnad</h3>
+            <ul>
+                <li>
+                    Kostnad(@ViewBag.NumberOfItems artiklar):
+                </li>
+                <li>
+                    @Html.DisplayFor(model => model.Price) kr
+                </li>
+                <li>
+                    Frakt:
+                </li>
+                <li>
+                    30kr
+                </li>
+                <li>
+                    Moms:
+                </li>
+                <li>
+                    0.5;
+                </li>
+                <li>Ordertotal:</li>
+                <li>150kr</li>
+            </ul>
+        </article>
+    }
+
+
+</section>

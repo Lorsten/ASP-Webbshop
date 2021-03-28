@@ -1,0 +1,32 @@
+﻿@model ProjectWeb.Models.EmailSend
+
+
+
+<section class="full-grid">
+    <h3>@ViewBag.Message</h3>
+    <h2>Kontakta oss</h2>
+    <h3>Du kan nå oss genom att använda formuläret nedan eller skicka ett vanligt mail. Du kan också nå oss på telefon</h3>
+
+</section>
+<section class="contact">
+    <h2>Kontakta oss</h2>
+    <form method="post">
+        <label asp-for="Subject"></label>
+        <input asp-for="Subject">
+        <label asp-for="Email"></label>
+        <input asp-for="Subject">
+        <label asp-for="Message"></label>
+        <textarea rows="20" id="Message" name="Message"></textarea>
+        <input type="submit" value="skicka">
+
+    </form>
+</section>
+<section class="contact-half">
+    <h2>Adress</h2>
+    <h3>Huvudkontor</h3>
+    <h3>Vägen 56</h3>
+    <h3>Vägen 56</h3>
+    <h3>E-post: <a href="mailto:info.se">info.se</a></h3>
+    <h3>Telefon: 070-343 034</h3>
+</section>
+

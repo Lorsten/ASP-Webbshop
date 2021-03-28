@@ -1,0 +1,96 @@
+
+/*
+      Olof Andersson
+      File for all variables
+*/
+
+$Max-Width: 1280px;
+
+//* Using mixin and if condition to handle different media querys
+@mixin screen-size($size) {
+    @if $size == phone{
+        @media (max-width: 540px) { @content; }
+    }
+    @else if $size == phone-landscape{
+        @media only screen and (min-width:320px) and (max-width:820px) and (orientation:landscape) {@content;}
+    }
+    @else if $size == tablet-portrait-up{
+        @media(min-width: 541px) and (max-width: 899px) {@content;}
+    }
+    @else if $size == tablet-landscape-up {
+        @media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) { @content; }
+    }
+    @else if $size == mobile-devices{
+        @media (min-width:320px) and (max-width: 1024){@content;}
+    }
+    @else if $size == desktop{
+        @media(min-width:900px) {@content;}
+    }
+    @else if $size == desktop-large{
+        @media(min-width:1280px) {@content;}
+    }
+}
+
+$themes:(
+    light:(
+        background-color:white
+
+    ),
+    dark:(
+        background-color:black
+    )
+);
+
+
+
+@mixin darkmode(){
+    @media(prefers-color-scheme: dark){@content;}
+}
+
+@function GetTheme($key){
+    @return map-get($theme, $key)
+}
+
+@mixin flex($direction){
+    display: flex;
+    flex-wrap: wrap;
+    @if $direction == row{
+        flex-direction: row;
+    }
+    @else if $direction == column{
+        flex-direction: column;
+    }
+
+}
+
+//* Color function using maps to pick which color to use
+@function Color($base ,$shade: base){
+    $color: map-get(map-get($Colors, $base), $shade);
+    @return $color;
+}
+
+
+//* All the colors for the website in two maps
+$Colors :(
+    Text:(
+    base: #fff,
+    secondary: #000,
+    third: #327DAC,
+    Links: #2B72B1,
+    ),
+    Menu:(
+        base:#9FC2D9,
+    ),
+    Layout:(
+        base:#0A5485,
+        Container: #FFEDCE,
+        Container2:#EBE9E4,
+        Container-header:#EBE9E7,
+        Hover: #0E2C40,
+        Active:#82A1B5,
+    ),
+    footer:(
+        base: #123960,
+    ),
+);
+

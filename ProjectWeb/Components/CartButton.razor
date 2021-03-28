@@ -1,0 +1,66 @@
+﻿
+
+@inject ShoppingCartService CartService
+@inject IJSRuntime ijsruntime
+@inject AppState appState
+@implements IDisposable
+
+
+<button id="cartbutton" class="@Cartclass" @onclick="OpenCart" data-Count="(@CountProducts)" aria-expanded="@Aria">Kundvagn <img src="images/kundvagn_ikon.svg" alt="kundvagn"></button>
+
+<section id="cartContainer" class="@CartContainer">
+    <h2>Din kundvagn</h2>
+    <button class="button noBackground" id="close" @onclick="OpenCart">&times;</button>
+    <CascadingValue Value="this">
+        <ShoppingCart DisplayCart="true" />
+    </CascadingValue>
+
+</section>
+
+@code {
+    public int CountProducts { get; set; } = 0;
+
+    public string Cartclass { get; set; } = "CartButton";
+
+    public string Aria { get; set; } = "false";
+
+    public string CartContainer { get; set; } = "cart";
+
+    protected override void OnInitialized()
+    {
+        int count = CartService.CountItems();
+        Cartclass = "CartButton";
+        if (count > 0) Cartclass = "CartButton Item";
+        CountProducts = count;
+        appState.Onchange += StateHasChanged;
+    }
+
+    public void OpenCart()
+    {
+        CartContainer = CartContainer == "cart" ? "cart active" : "cart";
+        Aria = CartContainer == "cart" ? "false" : "true";
+    }
+    public void Resetcount()
+    {
+        Cartclass = "cartbutton";
+        CountProducts = 0;
+        CartContainer = "cart";
+        StateHasChanged();
+
+    }
+    public void ChangeCount(int Count)
+    {
+        CountProducts = Count;
+        if (CountProducts == 0)
+        {
+            Cartclass = "CartButton";
+            CartContainer = "cart";
+        }
+        StateHasChanged();
+    }
+    public void Dispose()
+    {
+        appState.Onchange -= StateHasChanged;
+    }
+
+}

@@ -1,0 +1,57 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+
+<section class="register">
+    <h2>@ViewData["Title"]</h2>
+    <h3>Redan medlem?<a asp-area="Identity" asp-page="/Account/Login"> logga in här</a></h3>
+    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <h3>Skapa ditt konto</h3>
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div>
+            <label asp-for="Input.Email"></label>
+            <input asp-for="Input.Email"  />
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Input.Password"></label>
+            <input asp-for="Input.Password"  />
+            <span asp-validation-for="Input.Password" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Input.ConfirmPassword"></label>
+            <input asp-for="Input.ConfirmPassword" class="form-control" />
+            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Input.UserInfo.Firstname"></label>
+            <input asp-for="Input.UserInfo.Firstname" />
+            <span asp-validation-for="Input.UserInfo.Firstname" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Input.UserInfo.Lastname"></label>
+            <input asp-for="Input.UserInfo.Lastname" />
+            <span asp-validation-for="Input.UserInfo.Lastname" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Input.UserInfo.Adress"></label>
+            <input asp-for="Input.UserInfo.Adress" />
+            <span asp-validation-for="Input.UserInfo.Adress" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Input.UserInfo.City"></label>
+            <input asp-for="Input.UserInfo.City" />
+            <span asp-validation-for="Input.UserInfo.City" class="text-danger"></span>
+        </div>
+        <input type="hidden" name="Input.UserInfo.Email" value="example@gmail.com"/>
+        <button type="submit" >Register</button>
+    </form>
+  
+</section>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }

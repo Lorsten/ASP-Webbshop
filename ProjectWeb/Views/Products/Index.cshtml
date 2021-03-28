@@ -1,0 +1,19 @@
+﻿@model IEnumerable<ProjectWeb.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section id="products-list">
+
+    <h2>Nedan hittar du vår meny</h2>
+    @foreach (var product in Model)
+    {
+        <article>
+            <h3>@product.ProductName</h3>
+            <a asp-action="Details" asp-route-id="@product.ProductID"><img src="@product.ImagePath" alt="@product.ImageDesc"></a>
+            <h4>pris:@product.Price kr</h4>
+        </article>
+    }
+</section>

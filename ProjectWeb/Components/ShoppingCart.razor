@@ -1,0 +1,226 @@
+﻿
+
+@inject IJSRuntime JSRuntime
+@using Newtonsoft.Json;
+
+@inject AppState appState
+
+@inject ShoppingCartService shoppingCartService
+
+@inject NavigationManager NavManger
+
+
+@if (DisplayCart)
+{
+    @if (MyCart != null)
+    {
+        if (MyCart.ItemsInCart.Count > 0)
+        {
+<div>
+
+    @foreach (var cart in MyCart.ItemsInCart)
+    {
+
+        <article>
+            <h3>@cart.ProductItem.ProductName</h3>
+            <button @onclick="() => Remove(cart.CartID)" class="RemoveProduct">&times;</button>
+            <img src="@cart.ProductItem.ImagePath" alt="@cart.ProductItem.ImageDesc">
+            <div class="Quantity">
+                <button @onclick="() => ChangeQuant(false, cart.CartID)" class="Decrease">&minus;</button>
+                <span class="QuantityField">@cart.Quantity</span>
+                <button @onclick="() => ChangeQuant(true, cart.CartID)" class="Add">&plus;</button>
+            </div>
+            <h4>Pris: @cart.ProductItem.Price kr</h4>
+        </article>
+    }
+</div>
+    <article>
+        <h3>Summa: @TotalSum kr</h3>
+    </article>
+
+                <button @onclick="EmptyCart">Töm korg</button>
+                <a href="https://localhost:44338/checkout">Gå vidare till köp</a>
+                }
+                else
+                {
+                <h3 class="empty">Din varukorg är tom</h3>
+                }
+                }
+                else
+                {
+                <h3 class="empty">Din varukorg är tom</h3>
+                }
+                }
+                else
+                {
+                <thead>
+                    <tr>
+                        <th>Produktnamn</th>
+                        <th>Pris</th>
+                        <th>Antal</th>
+                        <th>Radera</th>
+                    </tr>
+                </thead>
+                @if (MyCart != null)
+                {
+                    @foreach (var item in MyCart.ItemsInCart)
+                    {
+                        <tbody>
+                            <tr>
+                                <td><img class="checkoutImg" src=@item.ProductItem.ImagePath />@item.ProductItem.ProductName</td>
+                                <td>@item.ProductItem.Price kr</td>
+                                <td>
+                                    <div class="Quantity">
+                                        <button class="Decrease" @onclick="() => ChangeQuant(false, item.CartID)">&minus;</button>
+                                        <span class="QuantityField">@item.Quantity</span>
+                                        <button class="Add" @onclick="() => ChangeQuant(true, item.CartID)">&plus;</button>
+                                    </div>
+                                </td>
+                                <td><button class="remove" @onclick="() => Remove(item.CartID)"><img src="Images/trash.svg"></button></td>
+                            </tr>
+                        </tbody>
+                    }
+                }
+                <h3>Total summa: @TotalSum kr</h3>
+
+                @code {
+
+
+                    [Parameter]
+                    public Cart MyCart { get; set; }
+
+                    [Parameter]
+                    public bool DisplayCart { get; set; }
+
+                    [CascadingParameter]
+                    public CartButton Parent { get; set; }
+
+
+                    public CartUser ItemsInCart { get; set; }
+
+
+
+                    public int TotalSum { get; set; } = 0;
+
+
+                    protected async override Task OnInitializedAsync()
+                    {
+                        appState.Onchange += StateHasChanged;
+                        if (DisplayCart)
+                        {
+                            MyCart = await shoppingCartService.RetriveItems();
+                        }
+                        SumTotal();
+                    }
+
+                    private void SumTotal()
+                    {
+                        if (MyCart != null)
+                        {
+
+                            if (MyCart.ItemsInCart != null)
+                            {
+                                int sum = 0;
+                                foreach (var items in MyCart.ItemsInCart)
+                                {
+                                    sum += items.ProductItem.Price * items.Quantity;
+                                }
+                                TotalSum = sum;
+                                if (DisplayCart) Parent.ChangeCount(MyCart.ItemsInCart.Count());
+
+                            }
+                        }
+                    }
+                    private async Task EmptyCart()
+                    {
+                        bool confirm = await JSRuntime.InvokeAsync<bool>
+                            ("confirm", "Säker på att du vill tömma varukorgen?");
+                        if (confirm)
+                        {
+
+                            await Client.DeleteAsync($"https://localhost:44338/Products/EmptyCart/?id={MyCart.SessionKey}");
+
+                            MyCart = new Cart();
+                            MyCart = null;
+                            if (DisplayCart) Parent.Resetcount();
+
+                        }
+                    }
+
+                    private async void Remove(int id)
+                    {
+                        int Index = MyCart.ItemsInCart.FindIndex(x => x.CartID == id);
+                        int CartID = MyCart.ItemsInCart[Index].CartID;
+                        MyCart.ItemsInCart.RemoveAt(Index);
+                        await RemoveCartItem(CartID);
+                        SumTotal();
+                        if (DisplayCart) Parent.ChangeCount(MyCart.ItemsInCart.Count());
+                        if(!DisplayCart && !MyCart.ItemsInCart.Any())
+                        {
+                            await JSRuntime.InvokeVoidAsync("BacktoHome");
+                        }
+
+                    }
+
+                    public int Price { get; set; } = 200;
+
+                    private async void ChangeQuant(bool Add, int id)
+                    {
+                        int index = MyCart.ItemsInCart.FindIndex(x => x.CartID == id);
+                        int quant = MyCart.ItemsInCart[index].Quantity;
+                        int ID = MyCart.ItemsInCart[index].CartID;
+                        if (Add)
+                        {
+                            quant++;
+                        }
+                        else
+                        {
+                            quant--;
+                            if (quant < 1)
+                            {
+                                quant = 1;
+                            }
+                        }
+
+
+                        MyCart.ItemsInCart[index].Quantity = quant;
+                        SumTotal();
+
+                        await EditQuantity(ID, quant);
+
+                    }
+
+                    public static HttpClient Client = new HttpClient();
+
+                    private async Task EditQuantity(int id, int Quantity)
+                    {
+
+                        var values = new Dictionary<string, string>
+                            ();
+                        values["CartID"] = id.ToString();
+                        values["Quantity"] = Quantity.ToString();
+
+                        var content = new FormUrlEncodedContent(values);
+           
+                            await Client.PutAsync("https://localhost:44338/Products/EditCart", content);
+               
+
+                    }
+
+                    //Using http post to post a formdata containing the iD of Cartuser table to the controller Product
+                    private async Task RemoveCartItem(int id)
+                    {
+
+                        var values = new Dictionary<string, string>();
+                        values["CartID"] = id.ToString();
+
+                        var content = new FormUrlEncodedContent(values);
+
+        
+                         await Client.PostAsync("https://localhost:44338/Products/RemoveCartItem", content);
+               
+               
+
+                    }
+                }
+                }

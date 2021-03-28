@@ -1,0 +1,89 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Mina uppgifter";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+    UserData Data = ViewData["UserName"] as UserData;
+}
+
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+<article class="half">
+    <h3> @ViewData["Title"]</h3>
+    @if (Data == null)
+    {
+        <h4>Welcome Admin</h4>
+    }
+    else
+    {
+        <ul>
+            <li>Namn: @Data.Firstname @Data.Lastname</li>
+            <li>Adress: @Data.Adress</li>
+            <li>Stad: @Data.City</li>
+        </ul>
+    }
+    <form id="profile-form" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Username"></label>
+            <input asp-for="Username" class="form-control" disabled />
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.PhoneNumber"></label>
+            <input asp-for="Input.PhoneNumber" class="form-control" />
+            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+        </div>
+        <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
+    </form>
+</article>
+<article class="half">
+    <h3>Poäng</h3>
+    <p>Du har total 500 poäng</p>
+    <a hreF="#">Se dina erbjudande</a>
+</article>
+<article class="full">
+    <h3>Tidigare ordrar</h3>
+    @if (User.Identity.IsAuthenticated && !User.IsInRole("Admin")){ 
+        @if (ViewData["Order"] != null)
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Ordernummer
+                        </th>
+
+                        <th>
+                            Pris
+                        </th>
+                        <th>
+                            Datum
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var Orders in (List<Order>)ViewData["Order"])
+                    {
+
+                        <tr>
+                            <td data-title="Ordernummer">
+                                @Orders.OrderNumber
+                            </td>
+                            <td data-title="Pris">
+                                @Orders.Price
+                            </td>
+                            <td data-title="Datum">
+                                @Orders.OrderDate
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        }
+    </article>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

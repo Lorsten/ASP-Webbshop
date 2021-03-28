@@ -1,0 +1,42 @@
+﻿@model IEnumerable<ProjectWeb.Models.Product>
+
+
+<section class="create">
+    <h2>Produkter</h2>
+    <a asp-action="Create" asp-controller="Products">Lägg till produkt</a>
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateAdded)
+                </th>
+                <th>
+                    Ändra
+                </th>
+                <th>
+                    Radera
+                </th>
+            </tr>
+        </thead>
+
+        @foreach (var product in Model)
+        {
+    <tbody>
+        <tr>
+            <td data-title=@Html.DisplayNameFor(model => model.ProductName)>@product.ProductName</td>
+            <td data-title=@Html.DisplayNameFor(model => model.Price)>@product.Price</td>
+            <td data-title=@Html.DisplayNameFor(model => model.DateAdded)>@product.DateAdded</td>
+            <td data-title="Ändra"><a asp-action="Edit" asp-route-id="@product.ProductID">Ändra produkt</a> </td>
+            <td data-title="Radera"><a asp-action="Delete" asp-route-id="@product.ProductID">Radera produkt</a> </td>
+        </tr>
+    </tbody>
+                }
+        </table>
+
+</section>

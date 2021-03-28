@@ -1,0 +1,59 @@
+﻿@model ProjectWeb.Models.Product
+
+@{
+    ViewData["Title"] = "Produktbeskrivning";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<section id="product">
+    <h2>@Html.DisplayFor(model => model.ProductName)</h2>
+    <component type="typeof(AddProduct)" render-mode="Server" param-Items="Model" param-UserID="ViewBag.cookie" />
+
+    <img src="@Html.DisplayFor(model => model.ImagePath)" alt="@Html.DisplayFor(model => model.ImageDesc)">
+    <article>
+        <h2>ingredienser</h2>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ex eros, faucibus sit amet elit at, venenatis ultrices mi. Phasellus ut lectus quam. Etiam efficitur, velit vel faucibus interdum, sapien ligula suscipit elit, eget rhoncus nisi ex ut turpis. Nullam at ullamcorper sem. Nam ac convallis orci, nec posuere nibh. Vestibulum dignissim faucibus mi, faucibus placerat nunc volutpat at. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nibh mauris, maximus eu gravida tristique, mollis eu quam.
+            Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+        </p>
+    </article>
+    <a asp-action="index">Gå tillbaka<img src="Images/Graphic/arrow.svg" alt="pil som pekar vänster för att visa gå tillbaka"></a>
+    <article>
+        <h2>Produktdetaljer</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Näringsvärden
+                    </th>
+                    <th>per 100g</th>
+                    <th>per potion</th>
+                </tr>
+            </thead>
+            <tr>
+                <td data-title="@Html.DisplayNameFor(model => model.Calories)">@Html.DisplayNameFor(model => model.Calories)</td>
+                <td data-title="per 100g">@Html.DisplayFor(model => model.Calories)</td>
+                <td data-title="per potion">@ViewBag.Calories</td>
+            </tr>
+            <tr>
+                <td data-title="@Html.DisplayNameFor(model => model.Fat)">@Html.DisplayNameFor(model => model.Fat)</td>
+                <td data-title="per 100g">@Html.DisplayFor(model => model.Fat)</td>
+                <td data-title="per potion">@ViewBag.Fat</td>
+            </tr>
+            <tr>
+                <td data-title="@Html.DisplayNameFor(model => model.Protein)">@Html.DisplayNameFor(model => model.Protein)</td>
+                <td data-title="per 100g">@Html.DisplayFor(model => model.Protein)</td>
+                <td data-title="per potion">@ViewBag.Protein</td>
+            </tr>
+            <tr>
+                <td data-title="@Html.DisplayNameFor(model => model.Salt)">@Html.DisplayNameFor(model => model.Salt)</td>
+                <td data-title="per 100g">@Html.DisplayFor(model => model.Salt)</td>
+                <td data-title="per potion">@ViewBag.Salt</td>
+            </tr>
+        </table>
+
+    </article>
+
+</section>
+

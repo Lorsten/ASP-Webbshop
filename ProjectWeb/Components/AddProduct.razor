@@ -1,0 +1,50 @@
+﻿
+@inject AppState appState
+<button @onclick="Additem">Lägg till produkt</button>
+
+@inject ShoppingCartService CartService 
+
+@code {
+
+    [Parameter]
+    public Product Items { get; set; }
+
+    [Parameter]
+    public string UserID { get; set; }
+
+    public string Result { get; set; }
+
+    public bool Development { get; set; } = true;
+
+    public Dictionary<string, string> test = new Dictionary<string, string>();
+
+    public static HttpClient Client = new HttpClient();
+
+    private async Task Additem()
+    {
+        await AddToCart();
+
+    }
+    private async Task AddToCart()
+    {
+
+        var values = new Dictionary<string, string>();
+        values["ProductID"] = Items.ProductID.ToString();
+        values["Quantity"] = "1";
+        values["UserID"] = UserID;
+
+        var content = new FormUrlEncodedContent(values);
+        if (Development)
+        {
+            await Client.PostAsync("https://localhost:44338/Products/AddToCart", content);
+        }
+        else
+        {
+            await Client.PostAsync("https://aspprojects.azurewebsites.net/Products/AddToCart", content);
+        }
+
+        await CartService.UpdateVIew();
+        appState.SetCartItems(1);
+    }
+}
+
