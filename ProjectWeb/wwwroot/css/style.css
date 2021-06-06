@@ -451,8 +451,6 @@ header {
                 width: 100; } }
         header .WidthContainer .navigation li.active {
           background-color: #82A1B5; }
-          header .WidthContainer .navigation li.active a {
-            border-bottom: 3px solid black; }
           header .WidthContainer .navigation li.active:hover a {
             color: #000000; }
     header .WidthContainer button {
@@ -925,6 +923,7 @@ header {
         position: relative;
         top: -40%; }
       #wrapper section.half-width form {
+        font-size: 1.2em;
         width: 80%;
         margin: 10% auto 0 auto; }
         #wrapper section.half-width form input[type="text"],
@@ -951,6 +950,8 @@ header {
           color: #000; }
         #wrapper section.half-width form p {
           margin-top: 10%; }
+          #wrapper section.half-width form p a {
+            color: white; }
       #wrapper section.half-width.round {
         border-top-right-radius: 1em;
         border-top-left-radius: 1em; }
@@ -1812,7 +1813,7 @@ footer {
 .CartButton.Item:after {
   content: attr(data-Count);
   position: absolute;
-  left: -35%;
+  left: -55%;
   width: 10%;
   bottom: 70%;
   height: 5%;
@@ -1827,7 +1828,7 @@ footer {
     left: -55%;
     bottom: -30%;
     padding: 3% 30%;
-    width: 120%;
+    width: 170%;
     height: 170%;
     background-color: #D8DAE9;
     z-index: -5; } }

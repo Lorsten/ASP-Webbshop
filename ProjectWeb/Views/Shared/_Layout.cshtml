@@ -31,15 +31,15 @@
                 <nav class="navigation">
                     <h2 class="Mobileheadline"><a asp-action="Index" asp-controller="Home">Online burger</a></h2>
                     <ul>
-                        <li><a asp-controller="Home" asp-action="Index">Hem</a></li>
+                        <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")"><a asp-controller="Home" asp-action="Index">Hem</a></li>
                         @if (controller != "Checkout")
                         {
-                            <li><a asp-action="Index" asp-controller="Products">Vår meny</a></li>
+                            <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Products" ? "active" : "")"><a asp-action="Index" asp-controller="Products">Vår meny</a></li>
                         }
 
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <li> <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Min sida</a></li>
+                            <li class="@(ViewContext.RouteData.Values["area"]?.ToString() == "Identity" ? "active" : "")"><a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Min sida</a></li>
                             <li>
                                 <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                                     <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logga ut</button>
@@ -50,7 +50,7 @@
                         {
                             if (controller != "Checkout")
                             {
-                                <li><a asp-area="Identity" asp-page="/Account/Register">Skapa konto</a></li>
+                                <li class="@(ViewContext.RouteData.Values["area"]?.ToString() == "Identity" ? "active" : "")"><a asp-area="Identity" asp-page="/Account/Register">Skapa konto</a></li>
                             }
                             <li><a asp-area="Identity" asp-page="/Account/Login">Logga in</a></li>
                         }

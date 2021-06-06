@@ -107,7 +107,7 @@ namespace ProjectWeb.Controllers
 
             return View(User);
         }
-
+        //Method for getting the total sum of the order
         private void CalculateTotalPrice(List<CartUser> CartModel)
         {
             foreach(var item in CartModel)
@@ -195,9 +195,7 @@ namespace ProjectWeb.Controllers
                 GenerateSessionKey();
                 Response.Cookies.Append("UserID", _IDCookie.ToString());
 
-                /* call mailhandler to send a mail, mailadress, title and content. Add settings in appsettings to send mail
                 await _mail.SendEmailAsync(UserInfo.Email, UserInfo.Email, $"Din order hos oss har skapats med ordernummer {OrderCreated.OrderNumber}", $"Totala kostnaden för din order är {OrderCreated.Price}kr");
-                */
                 return View(OrderCreated);
             }
 

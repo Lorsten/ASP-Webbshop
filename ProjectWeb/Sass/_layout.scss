@@ -342,10 +342,6 @@ header {
                 &.active {
                     background-color: Color(Layout, Active);
 
-                    a {
-                        border-bottom: 3px solid black;
-                    }
-
                     &:hover {
                         a {
                             color: #000000;
@@ -1036,6 +1032,7 @@ header {
             }
 
             form {
+                font-size:1.2em;
                 width: 80%;
                 margin: 10% auto 0 auto;
 
@@ -1055,6 +1052,7 @@ header {
                     border: none;
                     border-radius: .5em;
                 }
+               
 
                 label {
                     display: block;
@@ -1073,6 +1071,9 @@ header {
 
                 p {
                     margin-top: 10%;
+                    a{
+                        color:white;
+                    }
                 }
             }
 
@@ -2363,7 +2364,7 @@ footer {
         &:after {
             content: attr(data-Count);
             position: absolute;
-            left: -35%;
+            left: -55%;
             width: 10%;
             bottom: 70%;
             height: 5%;
@@ -2379,7 +2380,7 @@ footer {
                 left: -55%;
                 bottom: -30%;
                 padding: 3% 30%;
-                width: 120%;
+                width: 170%;
                 height: 170%;
                 background-color: #D8DAE9;
                 z-index: -5;

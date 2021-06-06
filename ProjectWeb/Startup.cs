@@ -48,7 +48,7 @@ namespace ProjectWeb
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 2;
+                options.Password.RequiredLength = 7;
                 options.Password.RequireLowercase = true;
                 options.Password.RequireUppercase = true;
             });
